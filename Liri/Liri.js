@@ -15,7 +15,7 @@ const keys = require("./keys.js");
 
 // require spotify
 const spotify = require(`node-spotify-api`);
-var spotify = new Spotify(keys.spotify);
+var spotify = new spotify(keys.spotify);
 
 // OMBD API
 let ombd = (keys.ombd);
@@ -23,8 +23,8 @@ let ombd = (keys.ombd);
 // Bandsintown API
 let bandsintown = (keys.bandsintown);
 
-var userinput = process.argv[2];
-var userQuery = process.argv.slice(3).join(" ");
+let userinput = process.argv[2];
+let userQuery = process.argv.slice(3).join(" ");
 
 // command questions
 function userCommand(userinput, userQuery) {
@@ -50,11 +50,35 @@ function userCommand(userinput, userQuery) {
 
 userCommand(userinput, userQuery);
 
-function concertThis() {
-    request ("https://rest.bandsintown.com/artists/" + userQuery + "/event?app_id=" + bandsintown, function (err, ersponse, body) {
-        // error code if can't load
-        if (err) {
-            return console.log(err);
-        }
-    })
+function spotifyThisSong() {
+
+ if (!userQuery) {
+     userQuery = "What What BOYYY"
+ };
+
+ spotify.search({
+     ype: `track`,
+     query: userQuery,
+     limit: 1
+ }, function (error, data) {
+     if (error) {
+         return console.log(`error` + error);
+     }
+
+     let spotifyArray = data.track.items;
+     for (i =0; i < spotifyArray.length; i++) {
+         console.log(`${data.track.items[i].album.artist[0].name}`)
+     };
+ });
 }
+
+// function concertThis() {
+    // request ("https://rest.bandsintown.com/artists/" + userQuery + "/event?app_id=" + bandsintown, function (err, ersponse, body) {
+        // error code if can't load
+       // if (err) {
+        //   return console.log(err);
+  //      }
+        
+//    })
+ // }
+
