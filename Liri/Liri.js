@@ -48,3 +48,5 @@ function userCommand(userinput, userQuery) {
     }
 }
 
+userCommand(userinput, userQuery);
+
