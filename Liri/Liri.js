@@ -50,3 +50,11 @@ function userCommand(userinput, userQuery) {
 
 userCommand(userinput, userQuery);
 
+function concertThis() {
+    request ("https://rest.bandsintown.com/artists/" + userQuery + "/event?app_id=" + bandsintown, function (err, ersponse, body) {
+        // error code if can't load
+        if (err) {
+            return console.log(err);
+        }
+    })
+}
