@@ -1,8 +1,13 @@
 console.log('this is loaded');
 
+// exports.spotify = {
+//  id: "f3d28a4b52a541beb5bd8752ccd842b4",
+//  secret: "4dfd2f39951d4a318470c46e8304796b"
+// };
+
 exports.spotify = {
-  id: "f3d28a4b52a541beb5bd8752ccd842b4",
-  secret: "4dfd2f39951d4a318470c46e8304796b"
+  id: process.env.SPOTIFY_ID,
+  secret: process.env.SPOTIFY_SECRET
 };
 
 exports.bandsintown = {
