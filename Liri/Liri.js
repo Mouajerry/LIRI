@@ -23,24 +23,24 @@ let ombd = (keys.ombd);
 // Bandsintown API
 let bandsintown = (keys.bandsintown);
 
-let userinput = process.argv[2];
-let userQuery = process.argv.slice(3).join(" ");
+var userinput = process.argv[2];
+var userQuery = process.argv.slice(3).join(" ");
 
 // command questions
 function userCommand(userinput, userQuery) {
 
     switch (userinput) {
         case "consert-this":
-            concertThis();
+            concert();
             break;
         case "spotify-this-song":
-            spotifyThisSong();
+            song();
             break;
         case "movie-this":
-            movieThis();
+            movie();
             break;
         case "do-what-it-says":
-            doThis();
+            do();
             break;
         default:
             console.log("I don't know, Please ask again or another question.")    
@@ -50,19 +50,19 @@ function userCommand(userinput, userQuery) {
 
 userCommand(userinput, userQuery);
 
-function spotifyThisSong() {
+function song() {
 
  if (!userQuery) {
-     userQuery = "What What BOYYY"
+     userQuery = "What? What?"
  };
 
  spotify.search({
-     ype: `track`,
+     type: `track`,
      query: userQuery,
      limit: 1
  }, function (error, data) {
      if (error) {
-         return console.log(`error` + error);
+         return console.log(`Error occurred` + error);
      }
 
      let spotifyArray = data.track.items;
@@ -72,7 +72,7 @@ function spotifyThisSong() {
  });
 }
 
-// function concertThis() {
+// function concert() {
     // request ("https://rest.bandsintown.com/artists/" + userQuery + "/event?app_id=" + bandsintown, function (err, ersponse, body) {
         // error code if can't load
        // if (err) {
