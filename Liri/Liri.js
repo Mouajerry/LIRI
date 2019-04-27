@@ -40,7 +40,7 @@ function userCommand(userinput, userQuery) {
             movie();
             break;
         case "do-what-it-says":
-            do();
+            dothis();
             break;
         default:
             console.log("I don't know, Please ask again or another question.")    
