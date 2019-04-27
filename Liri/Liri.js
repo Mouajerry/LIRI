@@ -7,6 +7,10 @@ let request = require("request");
 // require moment
 const moment = require(`moment`);
 
-var keys = require("./keys.js");
+// require file systems
+const fs = require("fs");
+
+// linking key.js
+const keys = require("./keys.js");
 
 var spotify = new Spotify(keys.spotify);
