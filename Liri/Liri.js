@@ -66,8 +66,12 @@ function song() {
      }
 
      let spotifyArray = data.track.items;
+
      for (i =0; i < spotifyArray.length; i++) {
-         console.log(`${data.track.items[i].album.artist[0].name}`)
+         console.log(`
+         Artist: ${data.track.items[i].album.artist[0].name}
+         
+         `)
      };
  });
 }
