@@ -7,82 +7,110 @@ let request = require("request");
 // require moment
 const moment = require(`moment`);
 
+// require spotify
+const Spotify = require("node-spotify-api")
+let spotify = new Spotify({
+    id: keys.spotify.id,
+    secret: keys.spotify.secret
+})
+
 // require file systems
 const fs = require("fs");
 
 // linking key.js
 const keys = require("./keys.js");
 
-// require spotify
-const spotify = require(`node-spotify-api`);
-var spotify = new spotify(keys.spotify);
+require("dotenv").config();
+var keys = require("./keys.js");
 
-// OMBD API
-let ombd = (keys.ombd);
+var Spotify = require('node-spotify-api');
 
-// Bandsintown API
-let bandsintown = (keys.bandsintown);
 
-var userinput = process.argv[2];
-var userQuery = process.argv.slice(3).join(" ");
+var axios = require("axios");
 
-// command questions
-function userCommand(userinput, userQuery) {
+var command = process.argv[2];
 
-    switch (userinput) {
-        case "consert-this":
-            concert();
-            break;
-        case "spotify-this-song":
-            song();
-            break;
-        case "movie-this":
-            movie();
-            break;
-        case "do-what-it-says":
-            dothis();
-            break;
-        default:
-            console.log("I don't know, Please ask again or another question.")    
-            break;
-    }
+var fs = require("fs");
+
+
+// MAIN LOGIC
+if (command === "movie-this") {
+   movieThis();
+
+} else if (command === "spotify-this-song"){
+ spotifyThis(process.argv[3]);
+
+}
+ else if (command === "concert-this"){
+  concertThis();
+} else if (command === "do-what-it-says"){
+  doWhatItSays();
+};
+
+// FUNCTIONS
+function movieThis() {
+   var movieName = process.argv[3];
+   var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=" + keys.omdb.key;
+
+   axios.get(queryUrl).then(
+       function (response) {
+           console.log("Movie title: " + response.data.Title);
+           console.log("Movie Year: " + response.data.Year);
+           console.log("Movie IMDB Rating: " + response.data.imdbRating);
+           console.log("Movie Rotten Tomato Rating: " + response.data.tomatorrating);
+           console.log("Movie Country: " + response.data.Country);
+           console.log("Movie language: " + response.data.Language);
+           console.log("Movie Plot: " + response.data.Plot);
+           console.log("Movie Actors: " + response.data.Actors);
+
+       }
+   );
 }
 
-userCommand(userinput, userQuery);
+function spotifyThis(song) {
+ var spotify = new Spotify({
+ id: keys.spotify.id,
+ secret: keys.spotify.secret
+});
 
-function song() {
+spotify.search({ type: 'track', query: song, limit: 1}, function(err, data) {
+ if (err) {
+   return console.log('Error occurred: ' + err);
 
- if (!userQuery) {
-     userQuery = "What? What?"
- };
+ }
 
- spotify.search({
-     type: `track`,
-     query: userQuery,
-     limit: 1
- }, function (error, data) {
-     if (error) {
-         return console.log(`Error occurred` + error);
-     }
-
-     let spotifyArray = data.track.items;
-
-     for (i =0; i < spotifyArray.length; i++) {
-         console.log(`
-         Artist: ${data.track.items[i].album.artist[0].name}
-         
-         `)
-     };
- });
+console.log(JSON.stringify('Artist(s): ' + data.tracks.items[0].album.artists[0].name,null,2));
+console.log(JSON.stringify('Song Name: ' + data.tracks.items[0].name,null,2));
+console.log(JSON.stringify('Album Name: ' + data.tracks.items[0].album.name,null,2));
+console.log(JSON.stringify('Preview Link: ' + data.tracks.items[0].album.external_urls.spotify,null,2));
+});
 }
 
-// function concert() {
-    // request ("https://rest.bandsintown.com/artists/" + userQuery + "/event?app_id=" + bandsintown, function (err, ersponse, body) {
-        // error code if can't load
-       // if (err) {
-        //   return console.log(err);
-  //      }
-        
-//    })
- // }
 
+function doWhatItSays() {
+
+fs.readFile("random.txt", "utf8", function(error, data) {
+
+ // If the code experiences any errors it will log the error to the console.
+ if (error) {
+   return console.log(error);
+ }
+
+ // We will then print the contents of data
+ console.log(data);
+
+ // Then split it by commas (to make it more readable)
+ var dataArr = data.split(",");
+
+ console.log(dataArr);
+
+ // We will then re-display the content as an array for later use.
+ if (dataArr[0] === "spotify-this-song"){
+     spotifyThis(dataArr[1]);
+ } if (dataArr[2] === "movie-this"){
+     movieThis(dataArr[3]);
+ } else if (dataArr[0] === "concert-this"){
+
+ }
+});
+};
