@@ -34,17 +34,25 @@ var fs = require("fs");
 
 
 // MAIN LOGIC
-if (command === "movie-this") {
-   movieThis();
-
-} else if (command === "spotify-this-song"){
- spotifyThis(process.argv[3]);
-
-}
- else if (command === "concert-this"){
-  concertThis();
-} else if (command === "do-what-it-says"){
-  doWhatItSays();
+function userCommand(command) {
+    // make a decision based on the command
+    switch (command) {
+        case "concert-this":
+            concertThis();
+            break;
+        case "spotify-this":
+            spotifyThisSong();
+            break;
+        case "movie-this":
+            movieThis();
+            break;
+        case "do-what-it-says":
+            doWhatItSays();
+            break;
+        default:
+            console.log("I don't understand");
+            break;
+    }
 };
 
 // FUNCTIONS
